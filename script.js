@@ -106,12 +106,8 @@ dali.addEventListener("change", function () {
 const forms = document.querySelectorAll("form");
 
 forms.forEach((form) => {
-  form.addEventListener("submit", function (e) {
-    // e.preventDefault();
-    console.log("Form submission prevented");
-    alert("message has been sent successfully.");
-    setTimeout(() => {
-      window.location.href = "https://iboke09.github.io/My_Portfolio_Website/";
-    }, 500);
+  form.addEventListener("submit", function () {
+    // Allow FormSubmit to handle sending the email
+    alert("✅ Your message has been sent successfully!");
   });
 });
