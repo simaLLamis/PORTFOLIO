@@ -154,10 +154,15 @@ span {
 }
 
 .home-img img {
-  border-radius: 50%;
-  width: 19vw;
+  width: 300px;               /* fixed size for consistent shape */
+  height: 300px;              /* same as width → perfect circle */
+  border-radius: 50%;         /* makes it circular */
+  object-fit: cover;          /* ensures the image doesn’t stretch */
+  border: 3px solid #f93eff;  /* optional colored border */
+  box-shadow: 0 0 20px rgba(249, 62, 255, 0.4); /* glowing effect */
   animation: floatImage 4s ease-in-out infinite;
 }
+
 
 @keyframes floatImage {
   0% {
@@ -176,10 +181,7 @@ span {
   width: calc(100% - 20%);
 }
 
- .home-img img{
-  max-width: 450px;
-  margin-right: 20px;
-} 
+ 
 
 .social-media a {
   display: inline-flex;
@@ -230,8 +232,13 @@ span {
 }
 
 .about-img img {
-  width: 27vw;
-  border-radius: 100%;
+  width: 300px;               /* fixed size for consistent shape */
+  height: 300px;              /* same as width → perfect circle */
+  border-radius: 50%;         /* makes it circular */
+  object-fit: cover;          /* ensures the image doesn’t stretch */
+  border: 3px solid #f93eff;  /* optional colored border */
+  box-shadow: 0 0 20px rgba(249, 62, 255, 0.4); /* glowing effect */
+  animation: floatImage 4s ease-in-out infinite;
 }
 
 .heading {
@@ -351,6 +358,16 @@ span {
   height: 100%;
   background-repeat: no-repeat;
   z-index: var(--z-index1);
+}
+.portfolio-video {
+  width: 100%;
+  display: block;
+  border-radius: 1rem;
+  transition: transform 0.5s ease;
+}
+
+.portfolio-box:hover .portfolio-video {
+  transform: scale(1.1);
 }
 
 .portfolio::before {
