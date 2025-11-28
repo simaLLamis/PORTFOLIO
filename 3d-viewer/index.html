@@ -25,7 +25,6 @@
             position: relative;
         }
         
-        /* Header matching your portfolio style */
         .header {
             position: absolute;
             top: 0;
@@ -75,36 +74,6 @@
             margin-right: 0.5rem;
         }
         
-       
-        
-        .controls-hint {
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(249, 62, 255, 0.3);
-            font-size: 1.2rem;
-            color: #bbb;
-        }
-        
-        .controls-hint strong {
-            color: #f93eff;
-            display: block;
-            margin-bottom: 0.8rem;
-            font-size: 1.4rem;
-        }
-        
-        .controls-hint div {
-            margin: 0.5rem 0;
-            display: flex;
-            align-items: center;
-        }
-        
-        .controls-hint i {
-            color: #f93eff;
-            margin-right: 0.5rem;
-            font-size: 1.6rem;
-        }
-        
-        /* Loading screen */
         #loading {
             position: absolute;
             top: 0;
@@ -128,7 +97,7 @@
         .spinner {
             width: 80px;
             height: 80px;
-            border: 4px solid rgba(0, 238, 255, 0.1);
+            border: 4px solid rgba(249, 62, 255, 0.1);
             border-top: 4px solid #f93eff;
             border-radius: 50%;
             animation: spin 1s linear infinite;
@@ -151,7 +120,6 @@
             50% { opacity: 0.5; }
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .header {
                 padding: 1.5rem 5%;
@@ -164,25 +132,6 @@
             .back-btn {
                 padding: 0.8rem 2rem;
                 font-size: 1.4rem;
-            }
-            
-            #info {
-                bottom: 15px;
-                left: 15px;
-                max-width: 280px;
-                padding: 1.5rem;
-            }
-            
-            #info h2 {
-                font-size: 1.6rem;
-            }
-            
-            #info p {
-                font-size: 1.2rem;
-            }
-            
-            .controls-hint {
-                font-size: 1rem;
             }
         }
     </style>
@@ -203,10 +152,9 @@
     
     <div id="canvas-container"></div>
     
-    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     
     <script>
         const container = document.getElementById('canvas-container');
@@ -246,7 +194,7 @@
         controls.maxDistance = 50;
         controls.maxPolarAngle = Math.PI / 1.5;
         
-        // Lighting setup matching portfolio theme
+        // Lighting setup
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
         scene.add(ambientLight);
         
@@ -259,7 +207,6 @@
         mainLight.shadow.camera.far = 50;
         scene.add(mainLight);
         
-        // Cyan accent light (matching #0ef)
         const accentLight = new THREE.PointLight(0x00eeff, 0.8, 30);
         accentLight.position.set(-5, 8, -5);
         scene.add(accentLight);
@@ -281,61 +228,103 @@
         ground.receiveShadow = true;
         scene.add(ground);
         
-        // Grid helper with cyan color
+        // Grid helper
         const gridHelper = new THREE.GridHelper(30, 30, 0x00eeff, 0x2a3038);
         gridHelper.material.opacity = 0.3;
         gridHelper.material.transparent = true;
         scene.add(gridHelper);
         
+        // Load GLTF model
+        const loader = new THREE.GLTFLoader();
         
-           // Load GLTF model with detailed error logging
-const loader = new THREE.GLTFLoader();
-
-// First simple load with your RAW link
-loader.load(
-  'https://raw.githubusercontent.com/simaLLamis/PORTFOLIO/main/3d-viewer/uni_gen5.gltf',
-  function (gltf) {
-    console.log("Simple load success!");
-    const model = gltf.scene;
-    scene.add(model);
-
-    // Enable shadow
-    model.traverse((node) => {
-        if (node.isMesh) {
-            node.castShadow = true;
-            node.receiveShadow = true;
+        const possiblePaths = [
+            'https://raw.githubusercontent.com/simaLLamis/PORTFOLIO/main/3d-viewer/uni_gen5.gltf',
+            'uni_gen5.gltf',
+            './uni_gen5.gltf'
+        ];
+        
+        let currentPathIndex = 0;
+        
+        function tryLoadModel(path) {
+            console.log('Attempting to load:', path);
+            
+            loader.load(
+                path,
+                function (gltf) {
+                    console.log('Model loaded successfully!', gltf);
+                    const model = gltf.scene;
+                    
+                    model.traverse((node) => {
+                        if (node.isMesh) {
+                            node.castShadow = true;
+                            node.receiveShadow = true;
+                            
+                            if (node.material) {
+                                node.material.needsUpdate = true;
+                            }
+                        }
+                    });
+                    
+                    const box = new THREE.Box3().setFromObject(model);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+                    
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 4 / maxDim;
+                    model.scale.multiplyScalar(scale);
+                    
+                    box.setFromObject(model);
+                    box.getCenter(center);
+                    
+                    model.position.x = -center.x;
+                    model.position.z = -center.z;
+                    model.position.y = -box.min.y;
+                    
+                    scene.add(model);
+                    
+                    const modelCenter = new THREE.Vector3();
+                    box.getCenter(modelCenter);
+                    controls.target.copy(modelCenter);
+                    controls.update();
+                    
+                    loadingDiv.classList.add('hidden');
+                    setTimeout(() => {
+                        loadingDiv.style.display = 'none';
+                    }, 500);
+                },
+                function (xhr) {
+                    const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
+                    console.log(percentComplete + '% loaded');
+                    if (loadingDiv.querySelector('p')) {
+                        loadingDiv.querySelector('p').textContent = `Loading 3D Model... ${percentComplete}%`;
+                    }
+                },
+                function (error) {
+                    console.error('Error loading model from path:', path, error);
+                    
+                    currentPathIndex++;
+                    if (currentPathIndex < possiblePaths.length) {
+                        console.log('Trying next path...');
+                        tryLoadModel(possiblePaths[currentPathIndex]);
+                    } else {
+                        console.error('All loading attempts failed');
+                        loadingDiv.innerHTML = `
+                            <div style="text-align: center; padding: 2rem;">
+                                <i class='bx bx-error' style="font-size: 5rem; color: #f93eff; margin-bottom: 1rem;"></i>
+                                <p style="font-size: 2rem; color: #f93eff;">Error Loading Model</p>
+                                <p style="font-size: 1.4rem; color: #bbb; margin-top: 1rem;">Could not load uni_gen5.gltf</p>
+                                <p style="font-size: 1.2rem; color: #888; margin-top: 1rem;">Please check the file path and try again</p>
+                                <a href="https://simallamis.github.io/PORTFOLIO/#portfolio" class="back-btn" style="margin-top: 2rem; display: inline-flex;">
+                                    <i class='bx bx-arrow-back'></i> Back to Portfolio
+                                </a>
+                            </div>
+                        `;
+                    }
+                }
+            );
         }
-    });
-
-    // Center model on ground
-    const box = new THREE.Box3().setFromObject(model);
-    const center = box.getCenter(new THREE.Vector3());
-    const size = box.getSize(new THREE.Vector3());
-
-    const maxDim = Math.max(size.x, size.y, size.z);
-    const scale = 4 / maxDim;
-    model.scale.multiplyScalar(scale);
-
-    box.setFromObject(model);
-    box.getCenter(center);
-    model.position.set(-center.x, -box.min.y, -center.z);
-
-    // Move camera target to model center
-    controls.target.copy(center);
-    controls.update();
-
-    // Remove loading screen
-    loadingDiv.classList.add('hidden');
-    setTimeout(() => loadingDiv.style.display = 'none', 500);
-  },
-  undefined,
-  function (error) {
-    console.error("Simple load error:", error);
-    // Fallback: try path list method
-    tryLoadModel(possiblePaths[currentPathIndex]);
-  }
-);
-
+        
+        tryLoadModel(possiblePaths[currentPathIndex]);
         
         // Animation loop
         function animate() {
