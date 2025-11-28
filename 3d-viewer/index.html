@@ -287,106 +287,55 @@
         gridHelper.material.transparent = true;
         scene.add(gridHelper);
         
-        // Load GLTF model with detailed error logging
-        const loader = new THREE.GLTFLoader();
         
-        // Try multiple possible paths
-       const possiblePaths = [
-    'https://cdn.jsdelivr.net/gh/simaLLamis/PORTFOLIO/3d-viewer/uni_gen5.gltf'
-];
-        let currentPathIndex = 0;
-        
-        function tryLoadModel(path) {
-            console.log('Attempting to load:', path);
-            
-            loader.load(
-                path,
-                function (gltf) {
-                    console.log('Model loaded successfully!', gltf);
-                const model = gltf.scene;
-                
-                // Enable shadows
-                model.traverse((node) => {
-                    if (node.isMesh) {
-                        node.castShadow = true;
-                        node.receiveShadow = true;
-                        
-                        // Enhance materials
-                        if (node.material) {
-                            node.material.needsUpdate = true;
-                        }
-                    }
-                });
-                
-                // Center and scale the model
-                const box = new THREE.Box3().setFromObject(model);
-                const center = box.getCenter(new THREE.Vector3());
-                const size = box.getSize(new THREE.Vector3());
-                
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = 4 / maxDim;
-                model.scale.multiplyScalar(scale);
-                
-                // Recompute box after scaling
-                box.setFromObject(model);
-                box.getCenter(center);
-                
-                // Position model on ground
-                model.position.x = -center.x;
-                model.position.z = -center.z;
-                model.position.y = -box.min.y;
-                
-                scene.add(model);
-                
-                // Update controls target to model center
-                const modelCenter = new THREE.Vector3();
-                box.getCenter(modelCenter);
-                controls.target.copy(modelCenter);
-                controls.update();
-                
-                // Hide loading screen
-                loadingDiv.classList.add('hidden');
-                setTimeout(() => {
-                    loadingDiv.style.display = 'none';
-                }, 500);
-            },
-            function (xhr) {
-                const percentComplete = Math.round((xhr.loaded / xhr.total) * 100);
-                console.log(percentComplete + '% loaded');
-                if (loadingDiv.querySelector('p')) {
-                    loadingDiv.querySelector('p').textContent = `Loading 3D Model... ${percentComplete}%`;
-                }
-            },
-            function (error) {
-                console.error('Error loading model from path:', path, error);
-                
-                // Try next path
-                currentPathIndex++;
-                if (currentPathIndex < possiblePaths.length) {
-                    console.log('Trying next path...');
-                    tryLoadModel(possiblePaths[currentPathIndex]);
-                } else {
-                    // All paths failed
-                    console.error('All loading attempts failed');
-                    loadingDiv.innerHTML = `
-                        <div style="text-align: center; padding: 2rem;">
-                            <i class='bx bx-error' style="font-size: 5rem; color: #0ef; margin-bottom: 1rem;"></i>
-                            <p style="font-size: 2rem; color: #0ef;">Error Loading Model</p>
-                            <p style="font-size: 1.4rem; color: #bbb; margin-top: 1rem;">File not found: uni_gen5.gltf</p>
-                            <p style="font-size: 1.2rem; color: #888; margin-top: 1rem;">Make sure the file is in the same folder as this HTML file</p>
-                            <p style="font-size: 1.2rem; color: #888;">Check the browser console (F12) for details</p>
-                            <a href="https://simallamis.github.io/PORTFOLIO/#portfolio" class="back-btn" style="margin-top: 2rem; display: inline-flex;">
-                                <i class='bx bx-arrow-back'></i> Back to Portfolio
-                            </a>
-                        </div>
-                    `;
-                }
-            }
-        );
+           // Load GLTF model with detailed error logging
+const loader = new THREE.GLTFLoader();
+
+// First simple load with your RAW link
+loader.load(
+  'https://raw.githubusercontent.com/simaLLamis/PORTFOLIO/main/3d-viewer/uni_gen5.gltf',
+  function (gltf) {
+    console.log("Simple load success!");
+    const model = gltf.scene;
+    scene.add(model);
+
+    // Enable shadow
+    model.traverse((node) => {
+        if (node.isMesh) {
+            node.castShadow = true;
+            node.receiveShadow = true;
         }
-        
-        // Start loading with the first path
-        tryLoadModel(possiblePaths[currentPathIndex]);
+    });
+
+    // Center model on ground
+    const box = new THREE.Box3().setFromObject(model);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+
+    const maxDim = Math.max(size.x, size.y, size.z);
+    const scale = 4 / maxDim;
+    model.scale.multiplyScalar(scale);
+
+    box.setFromObject(model);
+    box.getCenter(center);
+    model.position.set(-center.x, -box.min.y, -center.z);
+
+    // Move camera target to model center
+    controls.target.copy(center);
+    controls.update();
+
+    // Remove loading screen
+    loadingDiv.classList.add('hidden');
+    setTimeout(() => loadingDiv.style.display = 'none', 500);
+  },
+  undefined,
+  function (error) {
+    console.error("Simple load error:", error);
+    // Fallback: try path list method
+    tryLoadModel(possiblePaths[currentPathIndex]);
+  }
+);
+
         
         // Animation loop
         function animate() {
