@@ -291,11 +291,9 @@
         const loader = new THREE.GLTFLoader();
         
         // Try multiple possible paths
-        const possiblePaths = [
-            
-            'uni_gen5.gltf',
-            './uni_gen5.gltf'
-        ];
+       const possiblePaths = [
+    'https://github.com/simaLLamis/PORTFOLIO/releases/download/v2.0/uni_gen5.gltf'
+];
         let currentPathIndex = 0;
         
         function tryLoadModel(path) {
