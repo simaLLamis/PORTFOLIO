@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Objets 3D avec Three.js</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        #info {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            color: white;
+            background: rgba(0,0,0,0.7);
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        <strong>Objets 3D avec Three.js</strong><br>
+        Cube rouge 
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Création de la scène
+        var scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a1a2e);
+
+        // Création du renderer
+        var renderer = new THREE.WebGLRenderer({ antialias: true });
+    
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        //creation de la camera
+        var camera = new THREE.PerspectiveCamera(50, window.innerWidth /
+        window.innerHeight, 1, 10000);
+        camera.position.z = 10;
+
+        // Ajout de lumière
+        var ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        var pointLight = new THREE.PointLight(0xffffff, 1);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        // CUBE ROUGE
+        var cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+        var cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+        var cube1 = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube1.position.x = -3;
+        scene.add(cube1);
+
+        // CUBE ROUGE
+        var cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
+        var cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xff0099 });
+        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube.position.x = 3;
+        scene.add(cube);
+
+
+    
+
+        
+
+        
+
+        // Animation
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotation du cube
+            cube.rotation.x += 0.01;
+            cube.rotation.y += 0.02;
+            // Rotation du cube
+            cube1.rotation.x += 0.01;
+            cube1.rotation.y += 0.02;
+
+
+            
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Responsive
+        window.addEventListener('resize', function() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
