@@ -237,10 +237,15 @@
         // Load GLTF model
         const loader = new THREE.GLTFLoader();
         
+        // Set the resource path for the loader to properly find .bin files
+        loader.setPath('');
+        
         const possiblePaths = [
-            'https://github.com/simaLLamis/PORTFOLIO/blob/main/3d-viewer/uni_gen5.gltf',
+            'uni_gen5.glb',
+            './uni_gen5.glb',
             'uni_gen5.gltf',
-            './uni_gen5.gltf'
+            './uni_gen5.gltf',
+            'https://cdn.jsdelivr.net/gh/simaLLamis/PORTFOLIO@main/3d-viewer/uni_gen5.glb'
         ];
         
         let currentPathIndex = 0;
@@ -248,11 +253,36 @@
         function tryLoadModel(path) {
             console.log('Attempting to load:', path);
             
+            // Set the base path for this load attempt
+            if (path.includes('http')) {
+                const basePath = path.substring(0, path.lastIndexOf('/') + 1);
+                loader.setPath(basePath);
+            } else {
+                loader.setPath('');
+            }
+            
             loader.load(
-                path,
+                path.includes('http') ? path.split('/').pop() : path,
                 function (gltf) {
                     console.log('Model loaded successfully!', gltf);
                     const model = gltf.scene;
+                    
+                    model.traverse((node) => {
+                        if (node.isMesh) {
+                            node.castShadow = true;
+                            node.receiveShadow = true;
+                            
+                            if (node.material) {
+                                node.material.needsUpdate = true;
+                            }
+                        }
+                    });
+                    
+                    // Remove animations if they exist (they're causing the error)
+                    if (gltf.animations && gltf.animations.length > 0) {
+                        console.log('Removing animations to prevent errors');
+                        gltf.animations = [];
+                    }
                     
                     model.traverse((node) => {
                         if (node.isMesh) {
@@ -301,7 +331,12 @@
                 },
                 function (error) {
                     console.error('Error loading model from path:', path, error);
+                    console.error('Error details:', {
+                        message: error.message,
+                        type: error.constructor.name
+                    });
                     
+                    // Try next path
                     currentPathIndex++;
                     if (currentPathIndex < possiblePaths.length) {
                         console.log('Trying next path...');
@@ -312,8 +347,9 @@
                             <div style="text-align: center; padding: 2rem;">
                                 <i class='bx bx-error' style="font-size: 5rem; color: #f93eff; margin-bottom: 1rem;"></i>
                                 <p style="font-size: 2rem; color: #f93eff;">Error Loading Model</p>
-                                <p style="font-size: 1.4rem; color: #bbb; margin-top: 1rem;">Could not load uni_gen5.gltf</p>
-                                <p style="font-size: 1.2rem; color: #888; margin-top: 1rem;">Please check the file path and try again</p>
+                                <p style="font-size: 1.4rem; color: #bbb; margin-top: 1rem;">GLTF file has corrupted data</p>
+                                <p style="font-size: 1.2rem; color: #888; margin-top: 1rem;">Issue: The .bin file is missing or the animation data is corrupted</p>
+                                <p style="font-size: 1.2rem; color: #888;">Solution: Re-export your model without animations or fix the .bin file path</p>
                                 <a href="https://simallamis.github.io/PORTFOLIO/#portfolio" class="back-btn" style="margin-top: 2rem; display: inline-flex;">
                                     <i class='bx bx-arrow-back'></i> Back to Portfolio
                                 </a>
