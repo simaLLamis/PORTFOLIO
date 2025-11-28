@@ -10205,7 +10205,7 @@
 	"buffers":[
 		{
 			"byteLength":487204148,
-			"uri":"uni_gen5.bin"
+			"uri":"./uni_gen5.bin"
 		}
 	]
 }
