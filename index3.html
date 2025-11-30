@@ -24,7 +24,7 @@
 <body>
     <div id="info">
         <strong>Objets 3D avec Three.js</strong><br>
-        Cube rouge 
+        Cube AND Sphere
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -59,12 +59,11 @@
         cube1.position.x = -3;
         scene.add(cube1);
 
-        // CUBE ROUGE
-        var cubeGeometry = new THREE.BoxGeometry(2, 2, 2);
-        var cubeMaterial = new THREE.MeshPhongMaterial({ color: 0xff0099 });
-        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        cube.position.x = 3;
-        scene.add(cube);
+        
+        // Sphère verte
+var sphere = new THREE.Mesh(new THREE.SphereGeometry(1,32,32), new THREE.MeshBasicMaterial({ color: 0x00ff00 }));
+sphere.position.x = 2;
+scene.add(sphere);
 
 
     
@@ -77,9 +76,9 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            // Rotation du cube
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.02;
+            // Rotation du sphere
+            sphere.rotation.x += 0.01;
+            sphere.rotation.y += 0.02;
             // Rotation du cube
             cube1.rotation.x += 0.01;
             cube1.rotation.y += 0.02;
