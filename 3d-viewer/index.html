@@ -120,6 +120,162 @@
             50% { opacity: 0.5; }
         }
         
+
+        .control-panel {
+            position: absolute;
+            bottom: 2rem;
+            left: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(249, 62, 255, 0.3);
+            z-index: 50;
+            max-width: 350px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        
+        .control-panel h3 {
+            color: #f93eff;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .control-panel.hidden {
+            display: none;
+        }
+        
+        .object-info {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: rgba(249, 62, 255, 0.1);
+            border-radius: 0.5rem;
+        }
+        
+        .object-info p {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .control-group label {
+            display: block;
+            color: #00eeff;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+        
+        .control-group input[type="color"] {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .control-btn {
+            padding: 0.8rem 1.5rem;
+            background: #f93eff;
+            border: none;
+            border-radius: 0.5rem;
+            color: #1f242d;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s ease;
+            font-size: 1rem;
+            flex: 1;
+            min-width: 100px;
+        }
+        
+        .control-btn:hover {
+            background: #00eeff;
+            box-shadow: 0 0 1rem #00eeff;
+        }
+        
+        .control-btn.danger {
+            background: #ff3e3e;
+        }
+        
+        .control-btn.danger:hover {
+            background: #ff6b6b;
+            box-shadow: 0 0 1rem #ff3e3e;
+        }
+        
+        .toggle-panel-btn {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            background: #f93eff;
+            border: none;
+            border-radius: 50%;
+            color: #1f242d;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 0 1rem #f93eff;
+            transition: 0.3s ease;
+            z-index: 50;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toggle-panel-btn:hover {
+            box-shadow: 0 0 2rem #f93eff;
+            transform: scale(1.1);
+        }
+        
+        .info-box {
+            position: absolute;
+            top: 100px;
+            right: 2rem;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(0, 238, 255, 0.3);
+            z-index: 50;
+            max-width: 300px;
+        }
+        
+        .info-box h4 {
+            color: #00eeff;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .info-box ul {
+            list-style: none;
+        }
+        
+        .info-box li {
+            margin-bottom: 0.5rem;
+            color: #bbb;
+            font-size: 1rem;
+        }
+        
+        .info-box li i {
+            color: #f93eff;
+            margin-right: 0.5rem;
+        }
+        
         @media (max-width: 768px) {
             .header {
                 padding: 1.5rem 5%;
@@ -132,6 +288,24 @@
             .back-btn {
                 padding: 0.8rem 2rem;
                 font-size: 1.4rem;
+            }
+
+            
+            .control-panel {
+                left: 1rem;
+                right: 1rem;
+                bottom: 1rem;
+                max-width: calc(100% - 2rem);
+            }
+            
+            .info-box {
+                right: 1rem;
+                max-width: calc(100% - 2rem);
+            }
+            
+            .toggle-panel-btn {
+                bottom: 1rem;
+                right: 1rem;
             }
         }
     </style>
@@ -150,6 +324,77 @@
         </a>
     </header>
     
+    <div class="info-box">
+        <h4><i class='bx bx-info-circle'></i> Controls</h4>
+        <ul>
+            <li><i class='bx bx-mouse'></i> Click to select objects</li>
+            <li><i class='bx bx-rotate-right'></i> Right-click + drag to rotate</li>
+            <li><i class='bx bx-move'></i> Left-click + drag to pan</li>
+            <li><i class='bx bx-zoom-in'></i> Scroll to zoom</li>
+            <li><i class='bx bx-refresh'></i> Double-click to reset view</li>
+        </ul>
+    </div>
+    
+    <div class="control-panel hidden" id="controlPanel">
+        <h3><i class='bx bx-cog'></i> Object Controls</h3>
+        
+        <div class="object-info" id="objectInfo">
+            <p><strong>Selected:</strong> <span id="objectName">None</span></p>
+        </div>
+        
+        <div class="control-group">
+            <label>Position X: <span id="posX">0</span></label>
+            <input type="range" id="positionX" min="-10" max="10" step="0.1" value="0">
+        </div>
+        
+        <div class="control-group">
+            <label>Position Y: <span id="posY">0</span></label>
+            <input type="range" id="positionY" min="-10" max="10" step="0.1" value="0">
+        </div>
+        
+        <div class="control-group">
+            <label>Position Z: <span id="posZ">0</span></label>
+            <input type="range" id="positionZ" min="-10" max="10" step="0.1" value="0">
+        </div>
+        
+        <div class="control-group">
+            <label>Scale: <span id="scaleVal">1</span></label>
+            <input type="range" id="scale" min="0.1" max="3" step="0.1" value="1">
+        </div>
+        
+        <div class="control-group">
+            <label>Rotation Y: <span id="rotY">0</span>°</label>
+            <input type="range" id="rotationY" min="0" max="360" step="1" value="0">
+        </div>
+        
+        <div class="control-group">
+            <label>Color</label>
+            <input type="color" id="colorPicker" value="#ffffff">
+        </div>
+        
+        <div class="btn-group">
+            <button class="control-btn" id="resetBtn">
+                <i class='bx bx-reset'></i> Reset
+            </button>
+            <button class="control-btn danger" id="deleteBtn">
+                <i class='bx bx-trash'></i> Delete
+            </button>
+        </div>
+        
+        <div class="btn-group" style="margin-top: 1rem;">
+            <button class="control-btn" id="hideBtn">
+                <i class='bx bx-hide'></i> Hide
+            </button>
+            <button class="control-btn" id="duplicateBtn">
+                <i class='bx bx-copy'></i> Duplicate
+            </button>
+        </div>
+    </div>
+    
+    <button class="toggle-panel-btn" id="toggleBtn">
+        <i class='bx bx-cog'></i>
+    </button>
+    
     <div id="canvas-container"></div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -159,6 +404,11 @@
     <script>
         const container = document.getElementById('canvas-container');
         const loadingDiv = document.getElementById('loading');
+        const controlPanel = document.getElementById('controlPanel');
+        const toggleBtn = document.getElementById('toggleBtn');
+        
+        let selectedObject = null;
+        let originalProperties = new Map();
         
         // Scene setup
         const scene = new THREE.Scene();
@@ -194,6 +444,11 @@
         controls.maxDistance = 50;
         controls.maxPolarAngle = Math.PI / 1.5;
         
+
+        // Raycaster for object selection
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        
         // Lighting setup
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
         scene.add(ambientLight);
@@ -226,6 +481,7 @@
         ground.rotation.x = -Math.PI / 2;
         ground.position.y = 0;
         ground.receiveShadow = true;
+        ground.userData.isGround = true;
         scene.add(ground);
         
         // Grid helper
@@ -246,6 +502,275 @@
             'uni_gen5.gltf',
             './uni_gen5.gltf',
             'https://cdn.jsdelivr.net/gh/simaLLamis/PORTFOLIO@main/3d-viewer/uni_gen5.glb'
+        ]
+        // Object selection outline
+        const outlineMaterial = new THREE.MeshBasicMaterial({
+            color: 0xf93eff,
+            side: THREE.BackSide
+        });
+        
+        // Toggle control panel
+        toggleBtn.addEventListener('click', () => {
+            controlPanel.classList.toggle('hidden');
+        });
+        
+        // Mouse click for object selection
+        let isMouseDown = false;
+        let mouseDownPos = { x: 0, y: 0 };
+        
+        renderer.domElement.addEventListener('mousedown', (e) => {
+            isMouseDown = true;
+            mouseDownPos = { x: e.clientX, y: e.clientY };
+        });
+        
+        renderer.domElement.addEventListener('mouseup', onMouseClick);
+        
+        function onMouseClick(event) {
+            // Only select if mouse hasn't moved much (not dragging)
+            const dist = Math.sqrt(
+                Math.pow(event.clientX - mouseDownPos.x, 2) + 
+                Math.pow(event.clientY - mouseDownPos.y, 2)
+            );
+            
+            if (!isMouseDown || dist > 5) {
+                isMouseDown = false;
+                return;
+            }
+            isMouseDown = false;
+            
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(scene.children, true);
+            
+            if (intersects.length > 0) {
+                let object = intersects[0].object;
+                
+                // Skip ground and helpers
+                if (object.userData.isGround || object.type === 'GridHelper') {
+                    return;
+                }
+                
+                // Find the top-level mesh or go up to parent group
+                let iterations = 0;
+                while (object.parent && object.parent.type !== 'Scene' && iterations < 10) {
+                    object = object.parent;
+                    iterations++;
+                }
+                
+                selectObject(object);
+            }
+        }
+        
+        function selectObject(object) {
+            console.log('Selected object:', object);
+            console.log('Object type:', object.type);
+            console.log('Object name:', object.name);
+            
+            // Remove previous selection outline
+            if (selectedObject && selectedObject.userData.outline) {
+                scene.remove(selectedObject.userData.outline);
+                delete selectedObject.userData.outline;
+            }
+            
+            selectedObject = object;
+            
+            // Store original properties if not already stored
+            if (!originalProperties.has(object.uuid)) {
+                const firstMesh = object.isMesh ? object : object.children.find(c => c.isMesh);
+                originalProperties.set(object.uuid, {
+                    position: object.position.clone(),
+                    scale: object.scale.clone(),
+                    rotation: object.rotation.clone(),
+                    color: firstMesh && firstMesh.material ? firstMesh.material.color.clone() : null
+                });
+            }
+            
+            // Create bounding box outline instead
+            const box = new THREE.Box3().setFromObject(object);
+            const size = box.getSize(new THREE.Vector3());
+            const center = box.getCenter(new THREE.Vector3());
+            
+            const outlineGeometry = new THREE.BoxGeometry(size.x * 1.1, size.y * 1.1, size.z * 1.1);
+            const outlineEdges = new THREE.EdgesGeometry(outlineGeometry);
+            const outline = new THREE.LineSegments(
+                outlineEdges, 
+                new THREE.LineBasicMaterial({ color: 0xf93eff, linewidth: 2 })
+            );
+            outline.position.copy(center);
+            scene.add(outline);
+            object.userData.outline = outline;
+            
+            // Update control panel
+            controlPanel.classList.remove('hidden');
+            updateControlPanel();
+        }
+        
+        function updateControlPanel() {
+            if (!selectedObject) return;
+            
+            document.getElementById('objectName').textContent = selectedObject.name || 'Unnamed Object';
+            
+            document.getElementById('positionX').value = selectedObject.position.x;
+            document.getElementById('posX').textContent = selectedObject.position.x.toFixed(2);
+            
+            document.getElementById('positionY').value = selectedObject.position.y;
+            document.getElementById('posY').textContent = selectedObject.position.y.toFixed(2);
+            
+            document.getElementById('positionZ').value = selectedObject.position.z;
+            document.getElementById('posZ').textContent = selectedObject.position.z.toFixed(2);
+            
+            document.getElementById('scale').value = selectedObject.scale.x;
+            document.getElementById('scaleVal').textContent = selectedObject.scale.x.toFixed(2);
+            
+            const rotDeg = THREE.MathUtils.radToDeg(selectedObject.rotation.y);
+            document.getElementById('rotationY').value = rotDeg;
+            document.getElementById('rotY').textContent = Math.round(rotDeg);
+            
+            if (selectedObject.material && selectedObject.material.color) {
+                const color = '#' + selectedObject.material.color.getHexString();
+                document.getElementById('colorPicker').value = color;
+            }
+        }
+        
+        // Control listeners
+        document.getElementById('positionX').addEventListener('input', (e) => {
+            if (!selectedObject) return;
+            selectedObject.position.x = parseFloat(e.target.value);
+            document.getElementById('posX').textContent = e.target.value;
+            updateOutline();
+        });
+        
+        document.getElementById('positionY').addEventListener('input', (e) => {
+            if (!selectedObject) return;
+            selectedObject.position.y = parseFloat(e.target.value);
+            document.getElementById('posY').textContent = e.target.value;
+            updateOutline();
+        });
+        
+        document.getElementById('positionZ').addEventListener('input', (e) => {
+            if (!selectedObject) return;
+            selectedObject.position.z = parseFloat(e.target.value);
+            document.getElementById('posZ').textContent = e.target.value;
+            updateOutline();
+        });
+        
+        document.getElementById('scale').addEventListener('input', (e) => {
+            if (!selectedObject) return;
+            const scale = parseFloat(e.target.value);
+            selectedObject.scale.set(scale, scale, scale);
+            document.getElementById('scaleVal').textContent = e.target.value;
+            updateOutline();
+        });
+        
+        document.getElementById('rotationY').addEventListener('input', (e) => {
+            if (!selectedObject) return;
+            const deg = parseFloat(e.target.value);
+            selectedObject.rotation.y = THREE.MathUtils.degToRad(deg);
+            document.getElementById('rotY').textContent = Math.round(deg);
+            updateOutline();
+        });
+        
+        document.getElementById('colorPicker').addEventListener('input', (e) => {
+            if (!selectedObject) return;
+            const newColor = new THREE.Color(e.target.value);
+            selectedObject.traverse((child) => {
+                if (child.isMesh && child.material) {
+                    // Clone material if shared to avoid affecting other objects
+                    if (!child.material.userData.isCloned) {
+                        child.material = child.material.clone();
+                        child.material.userData.isCloned = true;
+                    }
+                    child.material.color.copy(newColor);
+                    child.material.needsUpdate = true;
+                }
+            });
+        });
+        
+        document.getElementById('resetBtn').addEventListener('click', () => {
+            if (!selectedObject) return;
+            const original = originalProperties.get(selectedObject.uuid);
+            if (original) {
+                selectedObject.position.copy(original.position);
+                selectedObject.scale.copy(original.scale);
+                selectedObject.rotation.copy(original.rotation);
+                
+                if (original.color) {
+                    selectedObject.traverse((child) => {
+                        if (child.isMesh && child.material) {
+                            if (!child.material.userData.isCloned) {
+                                child.material = child.material.clone();
+                                child.material.userData.isCloned = true;
+                            }
+                            child.material.color.copy(original.color);
+                            child.material.needsUpdate = true;
+                        }
+                    });
+                }
+                
+                updateControlPanel();
+                updateOutline();
+            }
+        });
+        
+        document.getElementById('deleteBtn').addEventListener('click', () => {
+            if (!selectedObject) return;
+            if (selectedObject.userData.outline) {
+                scene.remove(selectedObject.userData.outline);
+            }
+            scene.remove(selectedObject);
+            selectedObject = null;
+            controlPanel.classList.add('hidden');
+        });
+        
+        document.getElementById('hideBtn').addEventListener('click', () => {
+            if (!selectedObject) return;
+            selectedObject.visible = !selectedObject.visible;
+            if (selectedObject.userData.outline) {
+                selectedObject.userData.outline.visible = selectedObject.visible;
+            }
+        });
+        
+        document.getElementById('duplicateBtn').addEventListener('click', () => {
+            if (!selectedObject) return;
+            const clone = selectedObject.clone();
+            clone.position.x += 2;
+            scene.add(clone);
+        });
+        
+        function updateOutline() {
+            if (selectedObject && selectedObject.userData.outline) {
+                // Remove old outline
+                scene.remove(selectedObject.userData.outline);
+                
+                // Create new outline with updated transform
+                const box = new THREE.Box3().setFromObject(selectedObject);
+                const size = box.getSize(new THREE.Vector3());
+                const center = box.getCenter(new THREE.Vector3());
+                
+                const outlineGeometry = new THREE.BoxGeometry(size.x * 1.1, size.y * 1.1, size.z * 1.1);
+                const outlineEdges = new THREE.EdgesGeometry(outlineGeometry);
+                const outline = new THREE.LineSegments(
+                    outlineEdges, 
+                    new THREE.LineBasicMaterial({ color: 0xf93eff, linewidth: 2 })
+                );
+                outline.position.copy(center);
+                scene.add(outline);
+                selectedObject.userData.outline = outline;
+            }
+        }
+        
+        // Load GLTF model
+        const loader = new THREE.GLTFLoader();
+        loader.setPath('');
+        
+        const possiblePaths = [
+            
+            'final.gltf',
+            './final.gltf',
+            'https://github.com/simaLLamis/PORTFOLIO/releases/download/v1.1/final.gltf',
+            'https://github.com/simaLLamis/PORTFOLIO/blob/main/3d-viewer/final.gltf'
         ];
         
         let currentPathIndex = 0;
@@ -254,6 +779,7 @@
             console.log('Attempting to load:', path);
             
             // Set the base path for this load attempt
+
             if (path.includes('http')) {
                 const basePath = path.substring(0, path.lastIndexOf('/') + 1);
                 loader.setPath(basePath);
@@ -337,6 +863,7 @@
                     });
                     
                     // Try next path
+                    
                     currentPathIndex++;
                     if (currentPathIndex < possiblePaths.length) {
                         console.log('Trying next path...');
