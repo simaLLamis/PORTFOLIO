@@ -12,7 +12,9 @@
     />
   <link href="./profile.png" rel="icon" />
 
+  <!-- IMPORTANT: Keep your original style.css AND add the new styles -->
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style-projects.css" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
@@ -25,8 +27,9 @@
       <nav class="navbar">
         <a href="#home" class="active">Home</a>
         <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
         <a href="#services">Services</a>
-        <a href="#portfolio">Portfolio</a>
         <a href="#contact">Contact</a>
         <label for="switch" class="toggle">
           <input type="checkbox" class="input" id="switch" />
@@ -104,6 +107,198 @@
       </div>
     </section>
 
+    <!-- NEW: Skills section -->
+    <section class="skills" id="skills">
+      <h2 class="heading">My <span>Skills</span></h2>
+      <div class="skills-container">
+        <div class="skill-category">
+          <div class="skill-icon">
+            <i class="bx bx-code-alt"></i>
+          </div>
+          <h3>Backend Development</h3>
+          <div class="skill-list">
+            <span class="skill-tag">React.js</span>
+            <span class="skill-tag">Next.js</span>
+            <span class="skill-tag">Node.js</span>
+            <span class="skill-tag">WordPress</span>
+            <span class="skill-tag">WooCommerce</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-icon">
+            <i class="bx bx-cube"></i>
+          </div>
+          <h3>3D Design & Animation</h3>
+          <div class="skill-list">
+            <span class="skill-tag">Blender</span>
+            <span class="skill-tag">Three.js</span>
+            <span class="skill-tag">3D Modeling</span>
+            <span class="skill-tag">Animation</span>
+            <span class="skill-tag">WebGL</span>
+          </div>
+        </div>
+        <div class="skill-category">
+          <div class="skill-icon">
+            <i class="bx bx-data"></i>
+          </div>
+          <h3>Data & Design</h3>
+          <div class="skill-list">
+            <span class="skill-tag">Data Science</span>
+            <span class="skill-tag">Graphic Design</span>
+            <span class="skill-tag">UI/UX</span>
+            <span class="skill-tag">Visual Design</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEW: Enhanced Projects Section -->
+    <section class="projects" id="projects">
+      <h2 class="heading">Featured <span>Projects</span></h2>
+      
+      <!-- Project Filter Tabs -->
+      <div class="project-filters">
+        <button class="filter-btn active" data-filter="all">All Projects</button>
+        <button class="filter-btn" data-filter="webapp">Web Apps</button>
+        <button class="filter-btn" data-filter="web3d">Web 3D</button>
+        <button class="filter-btn" data-filter="blender">Blender</button>
+        <button class="filter-btn" data-filter="interactive">Interactive</button>
+      </div>
+
+      <div class="projects-grid">
+        
+        <!-- NEW PROJECT 1: Python Problem Game -->
+        <div class="project-card featured" data-category="webapp interactive">
+          <div class="project-image">
+            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&h=600&fit=crop" alt="Python Problem Game">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://python-problem-game--lami39564.replit.app" target="_blank" class="project-link" title="Play Game">
+                  <i class="bx bx-game"></i>
+                </a>
+                <a href="https://replit.com/@lami39564/python-problem-game" target="_blank" class="project-link" title="View Code">
+                  <i class="bx bx-code-alt"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span class="tag">Python</span>
+              <span class="tag">Game Dev</span>
+              <span class="tag">Interactive</span>
+            </div>
+            <h3>Python Problem Game</h3>
+            <p>An interactive problem-solving game built with Python on Replit. Features challenging puzzles and engaging gameplay mechanics.</p>
+          </div>
+        </div>
+
+        <!-- NEW PROJECT 2: Weather Web Page -->
+        <div class="project-card featured" data-category="webapp">
+          <div class="project-image">
+            <img src="https://images.unsplash.com/photo-1592210454359-9043f067919b?w=800&h=600&fit=crop" alt="Weather App">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="https://simallamis.github.io/Weather_Web_Page/" target="_blank" class="project-link" title="View Live">
+                  <i class="bx bx-link-external"></i>
+                </a>
+                <a href="https://github.com/simaLLamis/Weather_Web_Page" target="_blank" class="project-link" title="View on GitHub">
+                  <i class="bx bxl-github"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span class="tag">JavaScript</span>
+              <span class="tag">API</span>
+              <span class="tag">Web App</span>
+            </div>
+            <h3>Weather Web Application</h3>
+            <p>A responsive weather application that provides real-time weather information using API integration. Clean UI with detailed forecasts.</p>
+          </div>
+        </div>
+
+
+        <!-- Project 4: Black Hole Animation -->
+        <div class="project-card" data-category="web3d blender">
+          <div class="project-image">
+            <img src="black.png" alt="Black Hole Scene">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="glb.html" target="_blank" class="project-link" title="Live Demo">
+                  <i class="bx bx-link-external"></i>
+                </a>
+                <a href="final.blend" class="project-link" title="Download Blender File">
+                  <i class="bx bxl-blender"></i>
+                </a>
+                <a href="3D.pdf" class="project-link" title="Project Documentation">
+                  <i class="bx bx-file-pdf"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span class="tag">Blender</span>
+              <span class="tag">WebGL</span>
+              <span class="tag">Physics</span>
+            </div>
+            <h3>Black Hole Visualization</h3>
+            <p>A scientifically-inspired black hole scene with realistic gravitational lensing effects and particle simulations.</p>
+          </div>
+        </div>
+
+        <!-- Project 5: 3D Cube Animation -->
+        <div class="project-card" data-category="web3d interactive">
+          <div class="project-image">
+            <img src="cube.png" alt="3D Cube Animation">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="index3.html" target="_blank" class="project-link" title="Live Demo">
+                  <i class="bx bx-link-external"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span class="tag">Three.js</span>
+              <span class="tag">WebGL</span>
+              <span class="tag">Animation</span>
+            </div>
+            <h3>Animated 3D Cube Scene</h3>
+            <p>An elegant cube animation showcasing smooth transitions, lighting effects, and interactive controls built with Three.js.</p>
+          </div>
+        </div>
+
+
+        <!-- Project 7: 3D Table Model -->
+        <div class="project-card" data-category="blender">
+          <div class="project-image">
+            <img src="table.png" alt="3D Table">
+            <div class="project-overlay">
+              <div class="project-links">
+                <a href="table.png" target="_blank" class="project-link" title="View Full Image">
+                  <i class="bx bx-link-external"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="project-info">
+            <div class="project-tags">
+              <span class="tag">Blender</span>
+              <span class="tag">3D Modeling</span>
+              <span class="tag">Product Design</span>
+            </div>
+            <h3>Modern Table Design</h3>
+            <p>A detailed 3D table model showcasing advanced modeling techniques, material rendering, and photorealistic lighting.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <!-- services section design -->
     <section class="services" id="services">
       <h2 class="heading">Our <span>Services</span></h2>
@@ -134,120 +329,6 @@
             issues, ensuring smooth operation and resolving any challenges
             promptly.
           </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- portfolio section design -->
-    <section class="portfolio" id="portfolio">
-      <h2 class="heading">Latest <span>Blender Project</span></h2>
-
-      <div class="portfolio-container">
-        <!-- blackholl Project -->
-        <div class="portfolio-box">
-          <img src="black.png" alt="3JS Project Preview" class="portfolio-img">
-          <div class="portfolio-layer">
-            <h4>blackholl Scene</h4>
-            <p>A stunning cube animation made with Three.js</p>
-            <a href="glb.html" target="_blank"><i class="bx bx-link-external"></i></a>
-          </div>
-        </div>
-        <!-- black Blender File -->
-        <div class="portfolio-box">
-          <img src="black.png" alt="Blender File Preview" class="portfolio-img" />
-          <div class="portfolio-layer">
-            <h4>Blender File</h4>
-            <p>Download the original .blend file from GitHub Releases.</p>
-            <a href="final.blend" target="_blank">
-              <i class="bx bxl-blender"></i>
-            </a>
-          </div>
-        </div>
-        <!-- Cube Project -->
-        <div class="portfolio-box">
-          <img src="cube.png" alt="3JS Project Preview" class="portfolio-img">
-          <div class="portfolio-layer">
-            <h4>3D Cube Scene</h4>
-            <p>A stunning cube animation made with Three.js.</p>
-            <a href="index3.html" target="_blank"><i class="bx bx-link-external"></i></a>
-          </div>
-        </div>
-
-        <!-- Interactive 3D University Viewer -->
-        <div class="portfolio-box">
-          <img src="uni.png" alt="Interactive 3D University" class="portfolio-img">
-          <div class="portfolio-layer">
-            <h4>Interactive 3D University</h4>
-            <p>Explore the university campus in an interactive 3D viewer built with Three.js</p>
-            <a href="./3d-viewer/index.html" target="_blank"><i class="bx bx-cube-alt"></i></a>
-          </div>
-        </div>
-
-        <!-- Ocean Image Project -->
-        <div class="portfolio-box">
-          <img src="ocean.png" alt="Blender Project Preview" class="portfolio-img">
-          <div class="portfolio-layer">
-            <h4>3D Ocean Scene</h4>
-            <p>A stunning ocean animation made with Blender.</p>
-            <a href="ocean.png" target="_blank"><i class="bx bx-link-external"></i></a>
-          </div>
-        </div>
-
-        <!-- Ocean Video Project -->
-        <div class="portfolio-box">
-          <video class="portfolio-video" controls poster="0001.png">
-            <source src="ocean.avi" type="video/avi">
-            Your browser does not support the AVI video format.
-          </video>
-          <div class="portfolio-layer">
-            <h4>Ocean Animation Video</h4>
-            <p>Rendered in Blender with realistic water and lighting.</p>
-            <a href="ocean.avi" target="_blank"><i class="bx bx-play"></i></a>
-          </div>
-        </div>
-
-        <!-- Table Project -->
-        <div class="portfolio-box">
-          <img src="table.png" alt="Blender Project Preview" class="portfolio-img">
-          <div class="portfolio-layer">
-            <h4>3D Table</h4>
-            <p>A stunning 3D table made with Blender.</p>
-            <a href="table.png" target="_blank"><i class="bx bx-link-external"></i></a>
-          </div>
-        </div>
-
-        <!-- University Scene Project -->
-        <div class="portfolio-box">
-          <img src="uni.png" alt="Blender UNI Project Preview" class="portfolio-img">
-          <div class="portfolio-layer">
-            <h4>3D UNIVERSITY Scene</h4>
-            <p>A stunning university scene made with Blender.</p>
-            <a href="uni.png" target="_blank"><i class="bx bx-link-external"></i></a>
-          </div>
-        </div>
-
-        <!-- PDF Project -->
-        <div class="portfolio-box">
-          <img src="uni.png" alt="PDF Preview" class="portfolio-img" />
-          <div class="portfolio-layer">
-            <h4>PDF File</h4>
-            <p>Download the full project report in PDF format.</p>
-            <a href="Web3D_University2050_Report.docx" target="_blank">
-              <i class="bx bx-download"></i>
-            </a>
-          </div>
-        </div>
-
-        <!-- Blender File -->
-        <div class="portfolio-box">
-          <img src="uni.png" alt="Blender File Preview" class="portfolio-img" />
-          <div class="portfolio-layer">
-            <h4>Blender File</h4>
-            <p>Download the original .blend file from GitHub Releases.</p>
-            <a href="https://github.com/simaLLamis/PORTFOLIO/releases/download/v1.0/uni_gen5.blend" target="_blank">
-              <i class="bx bxl-blender"></i>
-            </a>
-          </div>
         </div>
       </div>
     </section>
@@ -299,5 +380,6 @@
 
     <!-- custom js -->
     <script src="script.js"></script>
+    <script src="script-projects.js"></script>
   </body>
 </html>
